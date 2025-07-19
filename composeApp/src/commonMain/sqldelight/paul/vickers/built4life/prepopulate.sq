@@ -1,0 +1,13 @@
+INSERT INTO workout (title) VALUES("CLEAN & PRESS - AMRAP");
+INSERT INTO workout (title) VALUES("FARMERS - AMRAP");
+INSERT INTO workout (title) VALUES("SQUAT - AMRAP");
+INSERT INTO workout (title) VALUES("LUNGES - AMRAP");
+INSERT INTO workout (title) VALUES("PUSH UPS - AMRAP");
+INSERT INTO workout (title) VALUES("CURLS - AMRAP");
+
+INSERT INTO workout (title) VALUES("CLEAN & PRESS - TOTAL REPS");
+INSERT INTO workout (title) VALUES("FARMERS - TOTAL REPS");
+INSERT INTO workout (title) VALUES("SQUAT - TOTAL REPS");
+INSERT INTO workout (title) VALUES("LUNGES - TOTAL REPS");
+INSERT INTO workout (title) VALUES("PUSH UPS - TOTAL REPS");
+INSERT INTO workout (title) VALUES("CURLS - TOTAL REPS");

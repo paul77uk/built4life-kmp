@@ -1,0 +1,20 @@
+CREATE TABLE workout (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    creationDate TEXT DEFAULT (datetime('now')) NOT NULL
+);
+
+getAll:
+SELECT * FROM workout;
+
+getById:
+SELECT * FROM workout WHERE id = ?;
+
+upsert:
+INSERT OR REPLACE INTO workout(id, title) VALUES(?, ?);
+
+delete:
+DELETE FROM workout WHERE id = ?;
+
+getAllWorkoutsWithScores:
+SELECT workout.id, workout.title, score.id, score.reps, score.creationDate FROM workout LEFT JOIN score ON workout.id = score.workoutId ORDER BY workout.creationDate;

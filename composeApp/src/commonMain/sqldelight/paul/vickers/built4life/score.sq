@@ -1,0 +1,22 @@
+CREATE TABLE score (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    workoutId INTEGER,
+    reps INTEGER NOT NULL,
+    creationDate TEXT DEFAULT (datetime('now')) NOT NULL,
+    FOREIGN KEY (workoutId) REFERENCES workout(id)
+);
+
+getAllScores:
+SELECT * FROM score;
+
+getScoreById:
+SELECT * FROM score WHERE id = ?;
+
+getScoresByWorkoutId:
+SELECT * FROM score WHERE workoutId = ?;
+
+upsertScore:
+INSERT OR REPLACE INTO score(id, reps, workoutId) VALUES(?, ?, ?);
+
+deleteScore:
+DELETE FROM score WHERE id = ?;
