@@ -65,7 +65,7 @@ fun AddScoreScreen(
                     singleLine = true,
                     maxLines = 1,
                     modifier = Modifier.weight(1f),
-                    label = { Text("Current") },
+                    label = { Text("New") },
                     placeholder = { Text("0") },
                     value = value,
                     onValueChange = viewModel::onTxtChange
