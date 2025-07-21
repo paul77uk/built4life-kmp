@@ -3,7 +3,7 @@ CREATE TABLE score (
     workoutId INTEGER,
     reps INTEGER NOT NULL,
     creationDate TEXT DEFAULT (datetime('now')) NOT NULL,
-    FOREIGN KEY (workoutId) REFERENCES workout(id)
+    FOREIGN KEY (workoutId) REFERENCES workout(id) ON DELETE CASCADE
 );
 
 getAllScores:

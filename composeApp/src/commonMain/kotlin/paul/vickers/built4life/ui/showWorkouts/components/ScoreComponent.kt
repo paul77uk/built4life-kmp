@@ -19,21 +19,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import paul.vickers.built4life.model.Score
+import kotlin.math.roundToLong
 
 @Composable
 fun ScoreComponent(
     scores: List<Score>,
     onEditScoreClick: () -> Unit,
-    eliteLevel: Long? = null
+    eliteLevel: Long? = null,
+    weight: Long? = null
 ) {
     val maxScore = scores.maxByOrNull { it.reps }?.reps ?: 0
+    val repMax = weight?.times((1 + 0.0333 * maxScore))?.roundToLong()
     Spacer(
         modifier = Modifier.padding(top = 8.dp)
     )
-    HorizontalDivider()
+    HorizontalDivider(modifier = Modifier.padding(bottom = 4.dp))
     Row(
         modifier = Modifier.fillMaxWidth().padding(start = 16.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -51,23 +55,53 @@ fun ScoreComponent(
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(top = 4.dp)
             )
+            if (weight != null) {
+                Spacer(modifier = Modifier.padding(start = 4.dp))
+                Text(
+                    "x ",
+                    modifier = Modifier.padding(top = 4.dp),
+                    color = Color(0xff397DD1),
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.SemiBold,
+                )
+                Text(
+                    "$weight",
+                    color = Color(0xff397DD1),
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    " KG",
+                    modifier = Modifier.padding(top = 4.dp),
+                    color = Color(0xff397DD1),
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.SemiBold,
+                )
+
+            }
+
             Spacer(modifier = Modifier.padding(start = 16.dp))
         }
-        eliteLevel?.let {
-            Column(
-                modifier = Modifier.weight(1f).padding(bottom = 8.dp, top = 12.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
+
+        Column(
+            modifier = Modifier.weight(1f).padding(bottom = 4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            if (weight != null)
+                OneRepMaxText(
+                    text = "$repMax"
+                )
+            eliteLevel?.let {
                 ProgressBar(
-                    progress = maxScore.toFloat() / 100
+                    progress = if (weight != null) repMax!!.toFloat() / 100 else maxScore.toFloat() / 100
                 )
                 LevelText(
-                    maxScore = maxScore,
-                    eliteLevel = eliteLevel
+                    maxScore = if (weight != null) repMax!! else maxScore,
+                    eliteLevel = it
                 )
             }
         }
+
         IconButton(
             onClick = { onEditScoreClick() }
         ) {
@@ -117,5 +151,18 @@ fun LevelText(
         else -> "Elite"
     }
 
-    Text(text, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+    Text(text, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+}
+
+@Composable
+fun OneRepMaxText(
+    text: String
+) {
+    Text(
+        "1 REP MAX: $text KG",
+        textAlign = TextAlign.Center,
+        fontSize = 10.sp,
+        fontWeight = FontWeight.SemiBold,
+    )
+
 }

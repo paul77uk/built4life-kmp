@@ -5,4 +5,6 @@ data class ScoreWithWorkout(
     val workoutId: Long,
     val workoutTitle: String,
     val scoreReps: Long?,
-    )
+    val workoutWeight: Long?,
+    val workoutEliteLevel: Long?
+)

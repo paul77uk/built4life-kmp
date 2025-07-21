@@ -23,6 +23,7 @@ fun UpsertWorkoutScreen(
     val deleteDialog = koinViewModel<DeleteWorkoutViewModel>()
     val value by viewModel.workoutTitleInput.collectAsStateWithLifecycle()
     val eliteLevel by viewModel.eliteLevelInput.collectAsStateWithLifecycle()
+    val weight by viewModel.weightInput.collectAsStateWithLifecycle()
     val editingWorkoutItem by viewModel.editingWorkoutItem.collectAsStateWithLifecycle()
 
     Column(
@@ -46,6 +47,13 @@ fun UpsertWorkoutScreen(
                 value = value,
                 onValueChange = viewModel::onTxtChange
             )
+            OutlinedTextField(
+                label = { Text("Weight") },
+                modifier = Modifier.fillMaxWidth(),
+                value = weight,
+                onValueChange = viewModel::onWeightChange
+            )
+
             OutlinedTextField(
                 label = { Text("Elite Level") },
                 modifier = Modifier.fillMaxWidth(),

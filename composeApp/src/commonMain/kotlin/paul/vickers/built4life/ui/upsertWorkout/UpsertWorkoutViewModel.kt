@@ -28,6 +28,9 @@ class UpsertWorkoutViewModel(
     private val _eliteLevelInput = MutableStateFlow("")
     val eliteLevelInput: StateFlow<String> = _eliteLevelInput.asStateFlow()
 
+    private val _weightInput = MutableStateFlow("")
+    val weightInput: StateFlow<String> = _weightInput.asStateFlow()
+
     init {
         workoutId?.let { getWorkoutById(it) }
     }
@@ -40,11 +43,16 @@ class UpsertWorkoutViewModel(
         _eliteLevelInput.value = newTxt
     }
 
+    fun onWeightChange(newTxt: String) {
+        _weightInput.value = newTxt
+    }
+
     fun getWorkoutById(id: Long) {
         viewModelScope.launch {
             val workout = workoutRepository.getById(id)
             _editingWorkoutItem.value = workout
             _workoutTitleInput.value = workout?.title.toString()
+            _weightInput.value = if (workout?.weight != null) workout.weight.toString() else ""
             _eliteLevelInput.value = if (workout?.eliteLevel != null) workout.eliteLevel.toString() else ""
         }
     }
@@ -59,9 +67,11 @@ class UpsertWorkoutViewModel(
                     if (workout != null) Workout(
                         id = workout.id,
                         title = _workoutTitleInput.value,
+                        weight = _weightInput.value.toLongOrNull(),
                         eliteLevel = _eliteLevelInput.value.toLongOrNull()
                     ) else Workout(
                         title = _workoutTitleInput.value,
+                        weight = _weightInput.value.toLongOrNull(),
                         eliteLevel = _eliteLevelInput.value.toLongOrNull()
                     )
                 )
