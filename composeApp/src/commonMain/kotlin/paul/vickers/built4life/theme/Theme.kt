@@ -286,7 +286,7 @@ val unspecified_scheme = ColorFamily(
 )
 
 val appShapes = Shapes(
-    extraSmall = RoundedCornerShape(1.dp),
+    extraSmall = RoundedCornerShape(0.dp),
     small = RoundedCornerShape(2.dp),
     medium = RoundedCornerShape(4.dp),
     large = RoundedCornerShape(6.dp),

@@ -26,6 +26,7 @@ class WorkoutRepositoryImpl(
                 Workout(
                     id = workoutEntity.id,
                     title = workoutEntity.title,
+                    eliteLevel = workoutEntity.eliteLevel
                 )
             }
         }
@@ -52,6 +53,7 @@ class WorkoutRepositoryImpl(
                     workout = Workout(
                         id = workoutId,
                         title = values.first().title,
+                        eliteLevel = values.first().eliteLevel
                     ),
                     scores = values.filterNot { it.id_ == null }.map { scoreEntity ->
                         Score(
@@ -81,6 +83,7 @@ class WorkoutRepositoryImpl(
                 Workout(
                     id = workoutEntity.id,
                     title = workoutEntity.title,
+                    eliteLevel = workoutEntity.eliteLevel
                 )
             }
         }
@@ -91,6 +94,7 @@ class WorkoutRepositoryImpl(
             queries.upsert(
                 id = workout.id,
                 title = workout.title,
+                eliteLevel = workout.eliteLevel
             )
         }
     }

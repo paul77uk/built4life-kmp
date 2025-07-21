@@ -14,6 +14,7 @@ import paul.vickers.built4life.ui.composables.B4LTopAppBar
 import paul.vickers.built4life.ui.deleteWorkouts.DeleteWorkoutDialog
 import paul.vickers.built4life.ui.deleteWorkouts.DeleteWorkoutViewModel
 import paul.vickers.built4life.utils.ScreenAction
+
 @Composable
 fun UpsertWorkoutScreen(
     onBackClick: () -> Unit,
@@ -21,6 +22,7 @@ fun UpsertWorkoutScreen(
     val viewModel = koinViewModel<UpsertWorkoutViewModel>()
     val deleteDialog = koinViewModel<DeleteWorkoutViewModel>()
     val value by viewModel.workoutTitleInput.collectAsStateWithLifecycle()
+    val eliteLevel by viewModel.eliteLevelInput.collectAsStateWithLifecycle()
     val editingWorkoutItem by viewModel.editingWorkoutItem.collectAsStateWithLifecycle()
 
     Column(
@@ -37,12 +39,18 @@ fun UpsertWorkoutScreen(
                 viewModel.upsertWorkout()
                 onBackClick()
             }
-        ){
+        ) {
             OutlinedTextField(
                 label = { Text("Workout Title") },
                 modifier = Modifier.fillMaxWidth(),
                 value = value,
                 onValueChange = viewModel::onTxtChange
+            )
+            OutlinedTextField(
+                label = { Text("Elite Level") },
+                modifier = Modifier.fillMaxWidth(),
+                value = eliteLevel,
+                onValueChange = viewModel::onEliteLevelChange
             )
         }
         DeleteWorkoutDialog(onBackClick)

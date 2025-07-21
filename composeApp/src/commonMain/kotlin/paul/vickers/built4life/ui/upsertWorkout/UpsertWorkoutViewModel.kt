@@ -25,6 +25,9 @@ class UpsertWorkoutViewModel(
     private val _workoutTitleInput = MutableStateFlow("")
     val workoutTitleInput: StateFlow<String> = _workoutTitleInput.asStateFlow()
 
+    private val _eliteLevelInput = MutableStateFlow("")
+    val eliteLevelInput: StateFlow<String> = _eliteLevelInput.asStateFlow()
+
     init {
         workoutId?.let { getWorkoutById(it) }
     }
@@ -33,11 +36,16 @@ class UpsertWorkoutViewModel(
         _workoutTitleInput.value = newTxt
     }
 
+    fun onEliteLevelChange(newTxt: String) {
+        _eliteLevelInput.value = newTxt
+    }
+
     fun getWorkoutById(id: Long) {
         viewModelScope.launch {
             val workout = workoutRepository.getById(id)
             _editingWorkoutItem.value = workout
             _workoutTitleInput.value = workout?.title.toString()
+            _eliteLevelInput.value = if (workout?.eliteLevel != null) workout.eliteLevel.toString() else ""
         }
     }
     // if todoItem is null, then we are adding a new todo
@@ -50,9 +58,11 @@ class UpsertWorkoutViewModel(
                 workoutRepository.upsert(
                     if (workout != null) Workout(
                         id = workout.id,
-                        title = _workoutTitleInput.value
+                        title = _workoutTitleInput.value,
+                        eliteLevel = _eliteLevelInput.value.toLongOrNull()
                     ) else Workout(
-                        title = _workoutTitleInput.value
+                        title = _workoutTitleInput.value,
+                        eliteLevel = _eliteLevelInput.value.toLongOrNull()
                     )
                 )
             }

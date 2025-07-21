@@ -2,7 +2,7 @@ INSERT INTO workout (title) VALUES("CLEAN & PRESS - AMRAP");
 INSERT INTO workout (title) VALUES("FARMERS - AMRAP");
 INSERT INTO workout (title) VALUES("SQUAT - AMRAP");
 INSERT INTO workout (title) VALUES("LUNGES - AMRAP");
-INSERT INTO workout (title) VALUES("PUSH UPS - AMRAP");
+INSERT INTO workout (title, eliteLevel) VALUES("PUSH UPS - AMRAP", 100);
 INSERT INTO workout (title) VALUES("CURLS - AMRAP");
 
 INSERT INTO workout (title) VALUES("CLEAN & PRESS - TOTAL REPS");

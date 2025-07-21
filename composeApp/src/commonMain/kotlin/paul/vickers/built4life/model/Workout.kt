@@ -6,4 +6,5 @@ import kotlinx.serialization.Serializable
 data class Workout(
     val id: Long? = null,
     val title: String,
+    val eliteLevel: Long?,
 )
