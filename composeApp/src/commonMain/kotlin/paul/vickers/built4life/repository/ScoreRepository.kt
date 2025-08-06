@@ -11,4 +11,6 @@ interface ScoreRepository {
     suspend fun getById(id: Long): Score?
     suspend fun upsert(score: Score)
     suspend fun delete(score: Score)
+    suspend fun getMaxScore(workoutId: Long?) : Long?
+    suspend fun getLastScore()
 }

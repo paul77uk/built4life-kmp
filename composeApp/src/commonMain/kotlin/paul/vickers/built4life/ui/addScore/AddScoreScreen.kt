@@ -23,15 +23,25 @@ fun AddScoreScreen(
     onBackClick: () -> Unit
 ) {
     val viewModel = koinViewModel<AddScoreViewModel>()
-    val value by viewModel.scoreTitleInput.collectAsStateWithLifecycle()
-    val scores by viewModel.scores.collectAsStateWithLifecycle()
+    val repsValue by viewModel.repsInput.collectAsStateWithLifecycle()
+    val weightValue by viewModel.weightInput.collectAsStateWithLifecycle()
+//    val scores by viewModel.scores.collectAsStateWithLifecycle()
+    val oneRepMax = viewModel.workoutOneRepMax
+    val reps = viewModel.workoutReps
+    val weight = viewModel.workoutWeight
+    val title = viewModel.workoutTitle
+
+
 
     Column() {
-        B4LTopAppBar(
-            onClick = { /*TODO*/ },
-            onBackIconClick = onBackClick,
-            screenAction = ScreenAction.ADD_SCORE,
-        )
+        title?.let {
+            B4LTopAppBar(
+                title = it,
+                onClick = { /*TODO*/ },
+                onBackIconClick = { onBackClick() },
+                screenAction = ScreenAction.ADD_SCORE,
+            )
+        }
         B4LForm(
             onSubmit = {
                 viewModel.upsertScore()
@@ -43,32 +53,53 @@ fun AddScoreScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                val maxScore = scores.maxByOrNull { it.reps }?.reps ?: 0
                 OutlinedTextField(
                     enabled = false,
                     modifier = Modifier.weight(1f),
-                    label = { Text("Max") },
+                    label = { Text("Reps") },
                     readOnly = true,
-                    value = "$maxScore",
+                    value = reps.toString(),
                     onValueChange = {},
                 )
                 OutlinedTextField(
                     enabled = false,
                     modifier = Modifier.weight(1f),
-                    label = { Text("Previous") },
+                    label = { Text("Weight") },
                     readOnly = true,
-                    value = "${scores.lastOrNull()?.reps ?: 0}",
+                    value = "$weight KG", // TODO: implement previous score
                     onValueChange = {},
                 )
+                OutlinedTextField(
+                    enabled = false,
+                    modifier = Modifier.weight(1f),
+                    label = { Text("1 Rep Max") },
+                    readOnly = true,
+                    value = "$oneRepMax KG", // TODO: implement previous score
+                    onValueChange = {},
+                )
+            }
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                     singleLine = true,
                     maxLines = 1,
                     modifier = Modifier.weight(1f),
-                    label = { Text("New") },
+                    label = { Text("New Reps") },
                     placeholder = { Text("0") },
-                    value = value,
-                    onValueChange = viewModel::onTxtChange
+                    value = repsValue,
+                    onValueChange = viewModel::onRepsTxtChange
+                )
+
+                OutlinedTextField(
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+                    singleLine = true,
+                    maxLines = 1,
+                    modifier = Modifier.weight(1f),
+                    label = { Text("New Weight") },
+                    placeholder = { Text("0") },
+                    value = weightValue,
+                    onValueChange = viewModel::onWeightTxtChange
                 )
             }
         }

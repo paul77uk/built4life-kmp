@@ -23,17 +23,15 @@ fun UpsertWorkoutScreen(
     val deleteDialog = koinViewModel<DeleteWorkoutViewModel>()
     val value by viewModel.workoutTitleInput.collectAsStateWithLifecycle()
     val eliteLevel by viewModel.eliteLevelInput.collectAsStateWithLifecycle()
-    val weight by viewModel.weightInput.collectAsStateWithLifecycle()
-    val editingWorkoutItem by viewModel.editingWorkoutItem.collectAsStateWithLifecycle()
+    val workoutId = viewModel.workoutId
 
     Column(
     ) {
         B4LTopAppBar(
-            onClick = {
-                editingWorkoutItem?.let { deleteDialog.openDeleteDialog(it) }
-            },
+            title = if (workoutId != null) "Edit Workout" else "Add Workout",
+            onClick = deleteDialog::openDeleteDialog,
             onBackIconClick = onBackClick,
-            screenAction = if (editingWorkoutItem != null) ScreenAction.EDIT_WORKOUT else ScreenAction.ADD_WORKOUT
+            screenAction = if (workoutId != null) ScreenAction.EDIT_WORKOUT else ScreenAction.ADD_WORKOUT
         )
         B4LForm(
             onSubmit = {
@@ -46,12 +44,6 @@ fun UpsertWorkoutScreen(
                 modifier = Modifier.fillMaxWidth(),
                 value = value,
                 onValueChange = viewModel::onTxtChange
-            )
-            OutlinedTextField(
-                label = { Text("Weight") },
-                modifier = Modifier.fillMaxWidth(),
-                value = weight,
-                onValueChange = viewModel::onWeightChange
             )
 
             OutlinedTextField(

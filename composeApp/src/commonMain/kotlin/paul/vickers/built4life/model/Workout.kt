@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Workout(
-    val id: Long? = null,
+    val id: Long?,
     val title: String,
-    val weight: Long?,
-    val eliteLevel: Long?,
+    val eliteLevel: Long? = null,
+    val creationDate: String? = null
 )

@@ -1,26 +1,28 @@
 package paul.vickers.built4life.ui.deleteWorkouts
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import paul.vickers.built4life.model.Workout
 import paul.vickers.built4life.repository.WorkoutRepository
+import paul.vickers.built4life.ui.navigation.Routes
 
 class DeleteWorkoutViewModel(
-    private val workoutRepository: WorkoutRepository
+    private val workoutRepository: WorkoutRepository,
+    savedStateHandle: SavedStateHandle
 ): ViewModel(
 ) {
 
-    private val _workoutToDelete = MutableStateFlow<Workout?>(null)
-    val workoutToDelete: StateFlow<Workout?> = _workoutToDelete.asStateFlow()
+    val workoutId = savedStateHandle.toRoute<Routes.UpsertWorkoutScreen>().workoutId
     private val _showDeleteDialog = MutableStateFlow(false)
     val showDeleteDialog: StateFlow<Boolean> = _showDeleteDialog.asStateFlow()
 
-    fun openDeleteDialog(workout: Workout){
-        _workoutToDelete.value = workout
+    fun openDeleteDialog(){
+//        _workoutToDelete.value = workout
         _showDeleteDialog.value = true
     }
 
@@ -29,6 +31,6 @@ class DeleteWorkoutViewModel(
     }
 
     fun deleteWorkout() {
-        viewModelScope.launch { workoutRepository.delete(workoutToDelete.value!!) }
+        viewModelScope.launch { workoutId?.let { workoutRepository.delete(it) } }
     }
 }

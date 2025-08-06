@@ -18,22 +18,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import paul.vickers.built4life.model.Score
+import paul.vickers.built4life.model.WorkoutWithMaxScore
 import kotlin.math.roundToLong
 
 @Composable
 fun ScoreComponent(
-    scores: List<Score>,
+    reps: Long?,
+    weight: Long?,
+    oneRepMax: Long?,
+    level: String?,
+    progress: Double?,
+//    maxScore: Long?,
+//    scores: List<Score>,
     onEditScoreClick: () -> Unit,
-    eliteLevel: Long? = null,
-    weight: Long? = null
+//    eliteLevel: Long? = null,
+//    weight: Long? = null
 ) {
-    val maxScore = scores.maxByOrNull { it.reps }?.reps ?: 0
-    val repMax = weight?.times((1 + 0.0333 * maxScore))?.roundToLong()
+//    val maxScore: Long? = maxScore
+//    val repMax = maxScore?.let { weight?.times((1 + 0.0333 * it)) }?.roundToLong()
     Spacer(
         modifier = Modifier.padding(top = 8.dp)
     )
@@ -46,7 +54,7 @@ fun ScoreComponent(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("$maxScore", color = Color(0xff397DD1), fontWeight = FontWeight.Bold)
+            Text("$reps", color = Color(0xff397DD1), fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.padding(start = 4.dp))
             Text(
                 "REPS",
@@ -65,7 +73,7 @@ fun ScoreComponent(
                     fontWeight = FontWeight.SemiBold,
                 )
                 Text(
-                    "$weight",
+                    weight.toString(),
                     color = Color(0xff397DD1),
                     fontWeight = FontWeight.Bold
                 )
@@ -89,16 +97,18 @@ fun ScoreComponent(
         ) {
             if (weight != null)
                 OneRepMaxText(
-                    text = "$repMax"
+                    text = "$oneRepMax"
                 )
-            eliteLevel?.let {
-                ProgressBar(
-                    progress = if (weight != null) repMax!!.toFloat() / 100 else maxScore.toFloat() / 100
-                )
-                LevelText(
-                    maxScore = if (weight != null) repMax!! else maxScore,
-                    eliteLevel = it
-                )
+            level?.let {
+                if (level.isNotEmpty())
+                    ProgressBar(
+                        progress = progress?.toFloat() ?: 0f
+                    )
+                if (weight != null) oneRepMax
+                if (level.isNotEmpty())
+                    LevelText(
+                        level = level
+                    )
             }
         }
 
@@ -132,26 +142,11 @@ private fun ProgressBar(
 
 @Composable
 fun LevelText(
-    maxScore: Long,
-    eliteLevel: Long
+    level: String?
 ) {
-    val maxScore = maxScore.toFloat() / 100
-    val level = (eliteLevel.toFloat() / 100) / 5
-    val beginner = level * 1
-    val novice = level * 2
-    val intermediate = level * 3
-    val advanced = level * 4
-//    val elite = level * 5
 
-    val text = when (maxScore) {
-        in 0.0f..beginner -> "Beginner"
-        in beginner..novice -> "Novice"
-        in novice..intermediate -> "Intermediate"
-        in intermediate..advanced -> "Advanced"
-        else -> "Elite"
-    }
 
-    Text(text, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+    level?.let { Text(it, fontSize = 12.sp, fontWeight = FontWeight.SemiBold) }
 }
 
 @Composable

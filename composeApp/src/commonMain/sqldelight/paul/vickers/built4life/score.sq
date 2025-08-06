@@ -1,22 +1,29 @@
-CREATE TABLE score (
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    workoutId INTEGER,
-    reps INTEGER NOT NULL,
-    creationDate TEXT DEFAULT (datetime('now')) NOT NULL,
-    FOREIGN KEY (workoutId) REFERENCES workout(id) ON DELETE CASCADE
+CREATE TABLE scores (
+    id INTEGER NOT NULL PRIMARY KEY,
+    workout_id INTEGER,
+    reps INTEGER,
+  	weight INTEGER,
+    creation_date TEXT DEFAULT (datetime('now')) NOT NULL,
+    FOREIGN KEY (workout_id) REFERENCES workouts(id) ON DELETE CASCADE
 );
 
 getAllScores:
-SELECT * FROM score;
+SELECT * FROM scores;
 
 getScoreById:
-SELECT * FROM score WHERE id = ?;
+SELECT * FROM scores WHERE id = ?;
 
 getScoresByWorkoutId:
-SELECT * FROM score WHERE workoutId = ?;
+SELECT * FROM scores WHERE workout_id = ?;
 
 upsertScore:
-INSERT OR REPLACE INTO score(id, reps, workoutId) VALUES(?, ?, ?);
+INSERT OR REPLACE INTO scores(id, reps, weight, workout_id) VALUES(?, ?, ?, ?);
 
 deleteScore:
-DELETE FROM score WHERE id = ?;
+DELETE FROM scores WHERE id = ?;
+
+getMaxScore:
+SELECT MAX(reps) FROM scores WHERE workout_id = ?;
+
+getLastScore:
+SELECT reps FROM scores ORDER BY scores.id LIMIT 1;

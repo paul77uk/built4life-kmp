@@ -17,22 +17,21 @@ class UpsertWorkoutViewModel(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val workoutId = savedStateHandle.toRoute<Routes.UpsertWorkoutScreen>().workoutId
+    val workoutId = savedStateHandle.toRoute<Routes.UpsertWorkoutScreen>().workoutId
+   val workoutTitle = savedStateHandle.toRoute<Routes.UpsertWorkoutScreen>().workoutTitle
 
-    private val _editingWorkoutItem = MutableStateFlow<Workout?>(null)
-    val editingWorkoutItem: StateFlow<Workout?> = _editingWorkoutItem.asStateFlow()
+    private val creationDate = savedStateHandle.toRoute<Routes.UpsertWorkoutScreen>().creationDate
 
-    private val _workoutTitleInput = MutableStateFlow("")
+    private val _workoutTitleInput = MutableStateFlow(workoutTitle ?: "")
     val workoutTitleInput: StateFlow<String> = _workoutTitleInput.asStateFlow()
 
     private val _eliteLevelInput = MutableStateFlow("")
     val eliteLevelInput: StateFlow<String> = _eliteLevelInput.asStateFlow()
 
-    private val _weightInput = MutableStateFlow("")
-    val weightInput: StateFlow<String> = _weightInput.asStateFlow()
-
     init {
-        workoutId?.let { getWorkoutById(it) }
+        if (workoutId != null) {
+            getWorkoutById(workoutId)
+        }
     }
 
     fun onTxtChange(newTxt: String) {
@@ -43,36 +42,24 @@ class UpsertWorkoutViewModel(
         _eliteLevelInput.value = newTxt
     }
 
-    fun onWeightChange(newTxt: String) {
-        _weightInput.value = newTxt
-    }
-
     fun getWorkoutById(id: Long) {
         viewModelScope.launch {
-            val workout = workoutRepository.getById(id)
-            _editingWorkoutItem.value = workout
-            _workoutTitleInput.value = workout?.title.toString()
-            _weightInput.value = if (workout?.weight != null) workout.weight.toString() else ""
-            _eliteLevelInput.value = if (workout?.eliteLevel != null) workout.eliteLevel.toString() else ""
+          _eliteLevelInput.value = (workoutRepository.getById(id)?.eliteLevel ?: "").toString()
         }
     }
+
+
     // if todoItem is null, then we are adding a new todo
     // if todoItem is not null, then we are updating an existing todo
     // so we set the txt to the todoItem's title
     fun upsertWorkout() {
         if (_workoutTitleInput.value.isNotEmpty()) {
             viewModelScope.launch {
-               val workout = _editingWorkoutItem.value
                 workoutRepository.upsert(
-                    if (workout != null) Workout(
-                        id = workout.id,
+                    Workout(
+                        id = workoutId,
                         title = _workoutTitleInput.value,
-                        weight = _weightInput.value.toLongOrNull(),
-                        eliteLevel = _eliteLevelInput.value.toLongOrNull()
-                    ) else Workout(
-                        title = _workoutTitleInput.value,
-                        weight = _weightInput.value.toLongOrNull(),
-                        eliteLevel = _eliteLevelInput.value.toLongOrNull()
+                        eliteLevel = _eliteLevelInput.value.toLongOrNull(),
                     )
                 )
             }

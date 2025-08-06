@@ -1,22 +1,40 @@
-CREATE TABLE workout (
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE workouts (
+    id INTEGER NOT NULL PRIMARY KEY,
     title TEXT NOT NULL,
-    weight INTEGER,
-    eliteLevel INTEGER,
-    creationDate TEXT DEFAULT (datetime('now')) NOT NULL
+    elite_level INTEGER,
+    creation_date TEXT DEFAULT (datetime('now')) NOT NULL -- Maybe try CURRENT_TIMESTAMP
 );
 
 getAll:
-SELECT * FROM workout;
+SELECT * FROM workouts ORDER BY creation_date;
 
 getById:
-SELECT * FROM workout WHERE id = ?;
+SELECT * FROM workouts WHERE id = ?;
 
+-- I think upsert causing problems for my order by when update, need to look into this,
+-- and maybe have a separate insert update, or program the upsert better
 upsert:
-INSERT OR REPLACE INTO workout(id, title, weight, eliteLevel) VALUES(?, ?, ?, ?);
+INSERT OR REPLACE INTO workouts(id, title, elite_level) VALUES(?, ?, ?);
 
 delete:
-DELETE FROM workout WHERE id = ?;
+DELETE FROM workouts WHERE id = ?;
 
-getAllWorkoutsWithScores:
-SELECT workout.id, workout.title, workout.eliteLevel, workout.weight, score.id, score.reps, score.creationDate FROM workout LEFT JOIN score ON workout.id = score.workoutId ORDER BY workout.creationDate;
+getAllWorkoutsWithMaxScore:
+SELECT
+    workouts.id,
+    UPPER(title) AS title,
+    weight,
+    reps,
+	MAX(CAST(weight * (1 + 0.0333 * reps) AS INTEGER)) AS one_rep_max,
+    CASE
+    	WHEN weight * (1 + 0.0333 * reps) < (elite_level / 4) THEN 'BEGINNER'
+    	WHEN weight * (1 + 0.0333 * reps) < (elite_level / 4 * 2) THEN 'NOVICE'
+    	WHEN weight * (1 + 0.0333 * reps) < (elite_level / 4 * 3) THEN 'INTERMEDIATE'
+    	WHEN weight * (1 + 0.0333 * reps) < (elite_level ) THEN 'ADVANCED'
+		WHEN weight * (1 + 0.0333 * reps) >= elite_level THEN 'ELITE'
+		ELSE ''
+    END AS level,
+    weight * (1 + 0.0333 * reps) / elite_level AS progress
+FROM workouts
+LEFT JOIN scores ON workouts.id = workout_id
+GROUP BY title;

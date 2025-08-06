@@ -6,9 +6,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import paul.vickers.built4life.model.ScoreWithWorkout
 import paul.vickers.built4life.model.Workout
-import paul.vickers.built4life.model.WorkoutsWithScores
+import paul.vickers.built4life.model.WorkoutWithMaxScore
 
 class WebWorkoutRepositoryImpl(
     private val settings: Settings,
@@ -38,9 +37,11 @@ class WebWorkoutRepositoryImpl(
     }
 
     override val workouts: Flow<List<Workout>> = flowOf(loadWorkouts())
-    override val scoreWithWorkout: Flow<List<ScoreWithWorkout>>
-        get() = TODO("Not yet implemented")
-    override val workoutsWithScores: Flow<List<WorkoutsWithScores>>
+//    override val scoreWithWorkout: Flow<List<ScoreWithWorkout>>
+//        get() = TODO("Not yet implemented")
+//    override val workoutsWithScores: Flow<List<WorkoutsWithScores>>
+//        get() = TODO("Not yet implemented")
+    override val workoutsWithMaxScores: Flow<List<WorkoutWithMaxScore>>
         get() = TODO("Not yet implemented")
 
     override suspend fun getById(id: Long): Workout? {
@@ -70,9 +71,13 @@ class WebWorkoutRepositoryImpl(
         }
     }
 
-    override suspend fun delete(workout: Workout) {
+    override suspend fun delete(workoutId: Long) {
         val workouts = loadWorkouts().toMutableList()
-        workouts.remove(workout)
+        workouts.remove(workouts.find { it.id == workoutId })
         saveWorkout(workouts)
+    }
+
+    override suspend fun updateMaxScore(workoutId: Long, maxScore: Long) {
+        TODO("Not yet implemented")
     }
 }

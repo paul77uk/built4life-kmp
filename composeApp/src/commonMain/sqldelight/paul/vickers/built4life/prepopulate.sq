@@ -1,13 +1,14 @@
-INSERT INTO workout (title) VALUES("CLEAN & PRESS - AMRAP");
-INSERT INTO workout (title) VALUES("FARMERS - AMRAP");
-INSERT INTO workout (title) VALUES("SQUAT - AMRAP");
-INSERT INTO workout (title) VALUES("LUNGES - AMRAP");
-INSERT INTO workout (title, eliteLevel) VALUES("PUSH UPS - AMRAP", 100);
-INSERT INTO workout (title) VALUES("CURLS - AMRAP");
+INSERT INTO workouts (title, elite_level) VALUES("CLEAN & PRESS", 130);
+INSERT INTO workouts (title) VALUES("FARMERS");
+INSERT INTO workouts (title) VALUES("DEADLIFT");
+INSERT INTO workouts (title) VALUES("SQUAT");
+INSERT INTO workouts (title) VALUES("LUNGES");
+INSERT INTO workouts (title) VALUES("BENCH");
+INSERT INTO workouts (title) VALUES("CURLS");
 
-INSERT INTO workout (title) VALUES("CLEAN & PRESS - TOTAL REPS");
-INSERT INTO workout (title) VALUES("FARMERS - TOTAL REPS");
-INSERT INTO workout (title) VALUES("SQUAT - TOTAL REPS");
-INSERT INTO workout (title) VALUES("LUNGES - TOTAL REPS");
-INSERT INTO workout (title) VALUES("PUSH UPS - TOTAL REPS");
-INSERT INTO workout (title) VALUES("CURLS - TOTAL REPS");
+INSERT INTO scores (workout_id, reps, weight) VALUES(1, 2, 60);
+INSERT INTO scores (workout_id, reps, weight) VALUES(1, 3, 60);
+INSERT INTO scores (workout_id, reps, weight) VALUES(1, 10, 44);
+INSERT INTO scores (workout_id, reps, weight) VALUES(2, 10, 60);
+INSERT INTO scores (workout_id, reps, weight) VALUES(2, 8, 60);
+INSERT INTO scores (workout_id, reps, weight) VALUES(6, 7, 60);

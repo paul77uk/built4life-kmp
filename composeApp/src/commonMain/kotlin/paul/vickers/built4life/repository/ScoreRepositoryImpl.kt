@@ -23,7 +23,8 @@ class ScoreRepositoryImpl(
                 Score(
                     id = scoreEntity.id,
                     reps = scoreEntity.reps,
-                    workoutId = scoreEntity.workoutId
+                    workoutId = scoreEntity.workout_id,
+                    weight = scoreEntity.weight
                 )
             }
         }
@@ -36,7 +37,8 @@ class ScoreRepositoryImpl(
                 Score(
                     id = scoreEntity.id,
                     reps = scoreEntity.reps,
-                    workoutId = scoreEntity.workoutId
+                    workoutId = scoreEntity.workout_id,
+                    weight = scoreEntity.weight
                 )
             }
         }
@@ -48,7 +50,8 @@ class ScoreRepositoryImpl(
                 Score(
                     id = scoreEntity.id,
                     reps = scoreEntity.reps,
-                    workoutId = scoreEntity.workoutId
+                    workoutId = scoreEntity.workout_id,
+                    weight = scoreEntity.weight
                 )
             }
         }
@@ -59,7 +62,8 @@ class ScoreRepositoryImpl(
             queries.upsertScore(
                 id = score.id,
                 reps = score.reps,
-                workoutId = score.workoutId
+                weight = score.weight,
+                workout_id = score.workoutId
             )
         }
     }
@@ -67,6 +71,20 @@ class ScoreRepositoryImpl(
     override suspend fun delete(score: Score) {
         withContext(Dispatchers.Default) {
             score.id?.let { queries.deleteScore(it) }
+        }
+    }
+
+    override suspend fun getMaxScore(workoutId: Long?): Long? {
+        return withContext(Dispatchers.Default) {
+            queries.getMaxScore(workoutId).executeAsOneOrNull().let { scoreEntity ->
+                scoreEntity?.MAX
+            }
+        }
+    }
+
+    override suspend fun getLastScore() {
+        return withContext(Dispatchers.Default) {
+            queries.getLastScore()
         }
     }
 }

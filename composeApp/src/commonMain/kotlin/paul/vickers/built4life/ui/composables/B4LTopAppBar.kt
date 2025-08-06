@@ -32,7 +32,7 @@ fun B4LTopAppBar(
     onClick: () -> Unit,
     onBackIconClick: () -> Unit = {},
     screenAction: ScreenAction,
-//    title: String,
+    title: String,
 //    navigationIcon: @Composable () -> Unit = {},
 //    actions: @Composable () -> Unit = {},
 ) {
@@ -76,13 +76,7 @@ fun B4LTopAppBar(
         },
         title = {
             Text(
-                text =
-                    when (screenAction) {
-                        ScreenAction.HOME -> "built4life"
-                        ScreenAction.EDIT_WORKOUT -> "Edit Workout"
-                        ScreenAction.ADD_WORKOUT -> "Add Workout"
-                        ScreenAction.ADD_SCORE -> "Add Score"
-                    }.uppercase(),
+                text = title.uppercase(),
                 fontWeight = FontWeight.Bold,
             )
 //                    if (windowSizeClass == WindowWidthSizeClass.MEDIUM || windowSizeClass == WindowWidthSizeClass.EXPANDED)

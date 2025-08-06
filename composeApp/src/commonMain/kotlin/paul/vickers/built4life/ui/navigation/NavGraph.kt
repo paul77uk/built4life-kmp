@@ -28,11 +28,21 @@ fun NavGraph(
     ) {
         composable<Routes.WorkoutsScreen> {
             WorkoutsScreen(
-                onAddEditClick = { workoutId ->
-                    navController.navigate(Routes.UpsertWorkoutScreen(workoutId = workoutId))
+                onAddEditClick = { workout ->
+                    navController.navigate(Routes.UpsertWorkoutScreen(
+                        workoutId = workout?.id,
+                        workoutTitle = workout?.title,
+                        creationDate = workout?.creationDate,
+                    ))
                 },
-                onLogScoreClick = { workoutId ->
-                    navController.navigate(Routes.AddScoreScreen(workoutId = workoutId))
+                onLogScoreClick = { workout ->
+                    navController.navigate(Routes.AddScoreScreen(
+                        workoutId = workout?.id,
+                        workoutTitle = workout?.title,
+                        workoutWeight = workout?.weight,
+                        workoutReps = workout?.reps,
+                        workoutOneRepMax = workout?.oneRepMax,
+                    ))
                 },
             )
         }

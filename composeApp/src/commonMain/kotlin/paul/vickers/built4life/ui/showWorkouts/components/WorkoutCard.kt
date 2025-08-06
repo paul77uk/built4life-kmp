@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
@@ -17,11 +17,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import paul.vickers.built4life.model.WorkoutsWithScores
+import paul.vickers.built4life.model.WorkoutWithMaxScore
 
 @Composable
 fun WorkoutCard(
-    workout: WorkoutsWithScores,
+//    maxScore: Long?,
+    title: String,
+    reps: Long?,
+    weight: Long?,
+    oneRepMax: Long?,
+    level: String?,
+    progress: Double?,
     onAddEditClick: () -> Unit,
     onLogScoreClick: () -> Unit
 ) {
@@ -32,7 +38,7 @@ fun WorkoutCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                workout.workout.title.uppercase(),
+                title,
                 modifier = Modifier.padding(16.dp),
                 fontWeight = FontWeight.Bold,
             )
@@ -40,14 +46,14 @@ fun WorkoutCard(
                 onClick = onAddEditClick
             ) {
                 Icon(
-                    Icons.Outlined.Edit,
+                    Icons.Outlined.MoreVert,
                     contentDescription = "Edit Workout",
                 )
             }
 
         }
 
-        if (workout.scores.isEmpty())
+        if (reps == null)
             OutlinedButton(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
                     .padding(bottom = 8.dp),
@@ -61,10 +67,12 @@ fun WorkoutCard(
             }
         else {
             ScoreComponent(
-                scores = workout.scores,
+                reps = reps,
+                weight = weight,
+                oneRepMax = oneRepMax,
+                level = level,
+                progress = progress,
                 onEditScoreClick = onLogScoreClick,
-                eliteLevel = workout.workout.eliteLevel,
-                weight = workout.workout.weight
             )
         }
     }
