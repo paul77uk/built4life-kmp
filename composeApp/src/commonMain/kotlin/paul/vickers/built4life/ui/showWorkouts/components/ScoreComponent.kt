@@ -29,19 +29,9 @@ import kotlin.math.roundToLong
 
 @Composable
 fun ScoreComponent(
-    reps: Long?,
-    weight: Long?,
-    oneRepMax: Long?,
-    level: String?,
-    progress: Double?,
-//    maxScore: Long?,
-//    scores: List<Score>,
+   workout: WorkoutWithMaxScore,
     onEditScoreClick: () -> Unit,
-//    eliteLevel: Long? = null,
-//    weight: Long? = null
 ) {
-//    val maxScore: Long? = maxScore
-//    val repMax = maxScore?.let { weight?.times((1 + 0.0333 * it)) }?.roundToLong()
     Spacer(
         modifier = Modifier.padding(top = 8.dp)
     )
@@ -54,7 +44,7 @@ fun ScoreComponent(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("$reps", color = Color(0xff397DD1), fontWeight = FontWeight.Bold)
+            Text("${workout.reps}", color = Color(0xff397DD1), fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.padding(start = 4.dp))
             Text(
                 "REPS",
@@ -63,7 +53,7 @@ fun ScoreComponent(
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(top = 4.dp)
             )
-            if (weight != null) {
+            if (workout.weight != null) {
                 Spacer(modifier = Modifier.padding(start = 4.dp))
                 Text(
                     "x ",
@@ -73,7 +63,7 @@ fun ScoreComponent(
                     fontWeight = FontWeight.SemiBold,
                 )
                 Text(
-                    weight.toString(),
+                    workout.weight.toString(),
                     color = Color(0xff397DD1),
                     fontWeight = FontWeight.Bold
                 )
@@ -95,19 +85,19 @@ fun ScoreComponent(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            if (weight != null)
+            if (workout.weight != null)
                 OneRepMaxText(
-                    text = "$oneRepMax"
+                    text = "${workout.oneRepMax}"
                 )
-            level?.let {
-                if (level.isNotEmpty())
+            workout.level?.let {
+                if (workout.level.isNotEmpty())
                     ProgressBar(
-                        progress = progress?.toFloat() ?: 0f
+                        progress = workout.progress?.toFloat() ?: 0f
                     )
-                if (weight != null) oneRepMax
-                if (level.isNotEmpty())
+                if (workout.weight != null) workout.oneRepMax
+                if (workout.level.isNotEmpty())
                     LevelText(
-                        level = level
+                        level = workout.level
                     )
             }
         }

@@ -10,9 +10,9 @@ sealed class Routes {
 
     @Serializable
     data class UpsertWorkoutScreen(
-        val workoutId: Long?,
+        val workoutId: Long? = null,
         val workoutTitle: String? = null,
-        val creationDate: String?,
+        val creationDate: String? = null
     ) :
         Routes()
 
@@ -22,7 +22,7 @@ sealed class Routes {
         val workoutTitle: String? = null,
         val workoutWeight: Long? = null,
         val workoutReps: Long? = null,
-        val workoutOneRepMax: Long? = null,
+        val workoutOneRepMax: Long? = null
     ) : Routes()
 
 }

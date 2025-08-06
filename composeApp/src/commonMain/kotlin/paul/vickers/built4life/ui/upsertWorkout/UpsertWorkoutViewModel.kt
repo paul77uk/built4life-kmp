@@ -49,9 +49,9 @@ class UpsertWorkoutViewModel(
     }
 
 
-    // if todoItem is null, then we are adding a new todo
-    // if todoItem is not null, then we are updating an existing todo
-    // so we set the txt to the todoItem's title
+    // if workout is null, then we are adding a new workout
+    // if workout is not null, then we are updating an existing workout
+    // so we set the txt to the workouts title
     fun upsertWorkout() {
         if (_workoutTitleInput.value.isNotEmpty()) {
             viewModelScope.launch {

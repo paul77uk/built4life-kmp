@@ -25,7 +25,6 @@ fun AddScoreScreen(
     val viewModel = koinViewModel<AddScoreViewModel>()
     val repsValue by viewModel.repsInput.collectAsStateWithLifecycle()
     val weightValue by viewModel.weightInput.collectAsStateWithLifecycle()
-//    val scores by viewModel.scores.collectAsStateWithLifecycle()
     val oneRepMax = viewModel.workoutOneRepMax
     val reps = viewModel.workoutReps
     val weight = viewModel.workoutWeight
@@ -66,7 +65,7 @@ fun AddScoreScreen(
                     modifier = Modifier.weight(1f),
                     label = { Text("Weight") },
                     readOnly = true,
-                    value = "$weight KG", // TODO: implement previous score
+                    value = "$weight KG",
                     onValueChange = {},
                 )
                 OutlinedTextField(
@@ -74,7 +73,7 @@ fun AddScoreScreen(
                     modifier = Modifier.weight(1f),
                     label = { Text("1 Rep Max") },
                     readOnly = true,
-                    value = "$oneRepMax KG", // TODO: implement previous score
+                    value = "$oneRepMax KG",
                     onValueChange = {},
                 )
             }

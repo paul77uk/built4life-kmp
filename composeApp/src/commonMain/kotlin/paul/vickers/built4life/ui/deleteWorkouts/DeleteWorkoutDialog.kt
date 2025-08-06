@@ -31,6 +31,7 @@ fun DeleteWorkoutDialog(
 ) {
     val viewModel = koinViewModel<DeleteWorkoutViewModel>()
     val showDialog by viewModel.showDeleteDialog.collectAsStateWithLifecycle()
+    val workoutId = viewModel.workoutId
 
     if (showDialog)
         BasicAlertDialog(

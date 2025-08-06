@@ -59,26 +59,20 @@ class ScoreRepositoryImpl(
 
     override suspend fun upsert(score: Score) {
         withContext(Dispatchers.Default) {
-            queries.upsertScore(
-                id = score.id,
-                reps = score.reps,
-                weight = score.weight,
-                workout_id = score.workoutId
-            )
+            score.workoutId?.let {
+                queries.upsertScore(
+                    id = score.id,
+                    reps = score.reps,
+                    weight = score.weight,
+                    workout_id = it
+                )
+            }
         }
     }
 
     override suspend fun delete(score: Score) {
         withContext(Dispatchers.Default) {
             score.id?.let { queries.deleteScore(it) }
-        }
-    }
-
-    override suspend fun getMaxScore(workoutId: Long?): Long? {
-        return withContext(Dispatchers.Default) {
-            queries.getMaxScore(workoutId).executeAsOneOrNull().let { scoreEntity ->
-                scoreEntity?.MAX
-            }
         }
     }
 

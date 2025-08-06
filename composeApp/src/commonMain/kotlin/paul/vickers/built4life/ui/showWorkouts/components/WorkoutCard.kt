@@ -21,13 +21,7 @@ import paul.vickers.built4life.model.WorkoutWithMaxScore
 
 @Composable
 fun WorkoutCard(
-//    maxScore: Long?,
-    title: String,
-    reps: Long?,
-    weight: Long?,
-    oneRepMax: Long?,
-    level: String?,
-    progress: Double?,
+    workout: WorkoutWithMaxScore,
     onAddEditClick: () -> Unit,
     onLogScoreClick: () -> Unit
 ) {
@@ -38,7 +32,7 @@ fun WorkoutCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                title,
+                workout.title,
                 modifier = Modifier.padding(16.dp),
                 fontWeight = FontWeight.Bold,
             )
@@ -53,7 +47,7 @@ fun WorkoutCard(
 
         }
 
-        if (reps == null)
+        if (workout.reps == null)
             OutlinedButton(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
                     .padding(bottom = 8.dp),
@@ -67,11 +61,7 @@ fun WorkoutCard(
             }
         else {
             ScoreComponent(
-                reps = reps,
-                weight = weight,
-                oneRepMax = oneRepMax,
-                level = level,
-                progress = progress,
+                workout = workout,
                 onEditScoreClick = onLogScoreClick,
             )
         }

@@ -7,7 +7,11 @@ import java.util.Properties
 
 actual class DriverFactory actual constructor() {
     actual fun createDriver(): SqlDriver {
-        val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:test.db", Properties(), B4LDatabase.Schema)
+        val driver: SqlDriver = JdbcSqliteDriver(
+            "jdbc:sqlite:test.db",
+            Properties().apply { put("foreign_keys", "true") },
+            B4LDatabase.Schema
+        )
         return driver
     }
 }

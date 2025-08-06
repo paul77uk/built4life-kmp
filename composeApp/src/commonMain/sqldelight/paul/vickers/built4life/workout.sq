@@ -37,4 +37,4 @@ SELECT
     weight * (1 + 0.0333 * reps) / elite_level AS progress
 FROM workouts
 LEFT JOIN scores ON workouts.id = workout_id
-GROUP BY title;
+GROUP BY workouts.id;

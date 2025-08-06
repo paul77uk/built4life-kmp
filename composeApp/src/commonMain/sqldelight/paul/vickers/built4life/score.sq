@@ -1,10 +1,10 @@
 CREATE TABLE scores (
-    id INTEGER NOT NULL PRIMARY KEY,
-    workout_id INTEGER,
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    workout_id INTEGER NOT NULL,
     reps INTEGER,
   	weight INTEGER,
     creation_date TEXT DEFAULT (datetime('now')) NOT NULL,
-    FOREIGN KEY (workout_id) REFERENCES workouts(id) ON DELETE CASCADE
+    FOREIGN KEY(workout_id) REFERENCES workouts(id) ON DELETE CASCADE
 );
 
 getAllScores:
