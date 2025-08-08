@@ -11,7 +11,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import paul.vickers.built4life.ui.addScore.AddScoreScreen
+import paul.vickers.built4life.ui.showPrograms.ProgramsScreen
 import paul.vickers.built4life.ui.showWorkouts.WorkoutsScreen
+import paul.vickers.built4life.ui.upsertProgram.UpsertProgramScreen
 import paul.vickers.built4life.ui.upsertWorkout.UpsertWorkoutScreen
 
 @Composable
@@ -24,7 +26,7 @@ fun NavGraph(
         modifier = Modifier.padding(innerPadding)
             .background(color = MaterialTheme.colorScheme.surfaceContainerLow).fillMaxSize(),
         navController = navController,
-        startDestination = Routes.WorkoutsScreen
+        startDestination = Routes.ProgramsScreen
     ) {
         composable<Routes.WorkoutsScreen> {
             WorkoutsScreen(
@@ -53,5 +55,21 @@ fun NavGraph(
         composable<Routes.AddScoreScreen> {
             AddScoreScreen(onBackClick = navController::navigateUp)
         }
+
+        composable<Routes.ProgramsScreen> {
+            ProgramsScreen(
+                onAddEditClick = { program ->
+                    navController.navigate(Routes.UpsertProgramScreen(
+                        programId = program?.id,
+                        programTitle = program?.title
+                    ))
+                }
+            )
+        }
+
+        composable<Routes.UpsertProgramScreen> {
+            UpsertProgramScreen(onBackClick = navController::navigateUp)
+        }
+
     }
 }

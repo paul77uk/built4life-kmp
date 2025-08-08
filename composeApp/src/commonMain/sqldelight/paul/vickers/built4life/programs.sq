@@ -1,0 +1,18 @@
+CREATE TABLE programs (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL
+);
+
+getAll:
+SELECT * FROM programs;
+
+getById:
+SELECT * FROM programs WHERE id = ?;
+
+-- I think upsert causing problems for my order by when update, need to look into this,
+-- and maybe have a separate insert update, or program the upsert better
+upsert:
+INSERT OR REPLACE INTO programs(id, title) VALUES(?, ?);
+
+delete:
+DELETE FROM programs WHERE id = ?;

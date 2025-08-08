@@ -1,4 +1,4 @@
-package paul.vickers.built4life.ui.deleteWorkouts
+package paul.vickers.built4life.ui.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,51 +14,47 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.koin.compose.viewmodel.koinViewModel
-
+import androidx.compose.runtime.Composable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeleteWorkoutDialog(
-    navigateBack: () -> Unit
+fun DeleteDialog(
+    showDialog: Boolean,
+    title: String,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
 ) {
-    val viewModel = koinViewModel<DeleteWorkoutViewModel>()
-    val showDialog by viewModel.showDeleteDialog.collectAsStateWithLifecycle()
-
     if (showDialog)
         BasicAlertDialog(
-            onDismissRequest = viewModel::dismissDeleteDialog,
+            onDismissRequest = onDismiss,
         ) {
-            Surface(shape = RoundedCornerShape(10.dp)
+            Surface(
+                shape = RoundedCornerShape(10.dp)
             ) {
-                Column(modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("Delete workout", fontWeight = FontWeight.Bold)
-                    Text("Are you sure you want to delete this workout?", fontSize = 14.sp)
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text("Delete $title", fontWeight = FontWeight.Bold)
+                    Text("Are you sure you want to delete this $title?", fontSize = 14.sp)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
                         OutlinedButton(
                             shape = RoundedCornerShape(10.dp),
-                            onClick = viewModel::dismissDeleteDialog
+                            onClick = onDismiss
                         ) {
                             Text("Cancel")
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
                             shape = RoundedCornerShape(10.dp),
-                            onClick = {
-                                viewModel.deleteWorkout()
-                                navigateBack()
-                            }
+                            onClick = onConfirm
                         ) {
                             Text("Confirm")
                         }
@@ -67,5 +63,5 @@ fun DeleteWorkoutDialog(
                 }
             }
         }
-}
 
+}

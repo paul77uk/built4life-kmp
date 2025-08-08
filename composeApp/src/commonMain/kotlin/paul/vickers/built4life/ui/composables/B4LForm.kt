@@ -18,11 +18,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun B4LForm(
+    modifier: Modifier = Modifier,
     onSubmit: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.TopCenter
     ) {
         OutlinedCard(

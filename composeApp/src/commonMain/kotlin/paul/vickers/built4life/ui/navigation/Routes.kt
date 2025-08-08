@@ -25,4 +25,14 @@ sealed class Routes {
         val workoutOneRepMax: Long? = null
     ) : Routes()
 
+    @Serializable
+    data object ProgramsScreen : Routes()
+
+    @Serializable
+    data class UpsertProgramScreen(
+        val programId: Long? = null,
+        val programTitle: String? = null
+    ) : Routes()
+
+
 }
