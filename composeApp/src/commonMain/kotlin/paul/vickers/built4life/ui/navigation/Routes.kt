@@ -34,5 +34,12 @@ sealed class Routes {
         val programTitle: String? = null
     ) : Routes()
 
+    @Serializable
+    data class UpsertDayScreen(
+        val dayId: Long? = null,
+        val dayTitle: String? = null,
+        val programId: Long? = null
+    ) : Routes()
+
 
 }

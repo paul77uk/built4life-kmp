@@ -40,7 +40,7 @@ fun DeleteDialog(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text("Delete $title", fontWeight = FontWeight.Bold)
-                    Text("Are you sure you want to delete this $title?", fontSize = 14.sp)
+                    Text("Are you sure you want to delete $title?", fontSize = 14.sp)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End

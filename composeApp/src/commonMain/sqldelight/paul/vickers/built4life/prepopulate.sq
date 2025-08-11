@@ -19,3 +19,5 @@ INSERT INTO scores (workout_id, reps, weight) VALUES(5, 10, 14);
 INSERT INTO scores (workout_id, reps, weight) VALUES(7, 7, 28);
 
 INSERT INTO programs (title) VALUES("MUSCLE BUILDER");
+
+INSERT INTO days (title, program_id) VALUES("Shoulders, Traps, Back", 1);

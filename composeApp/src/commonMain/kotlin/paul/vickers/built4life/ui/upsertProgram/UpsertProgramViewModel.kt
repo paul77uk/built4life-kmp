@@ -15,7 +15,7 @@ import paul.vickers.built4life.ui.navigation.Routes
 class UpsertProgramViewModel(
     private val programRepository: ProgramRepository,
     savedStateHandle: SavedStateHandle
-): ViewModel() {
+) : ViewModel() {
 
     val programId = savedStateHandle.toRoute<Routes.UpsertProgramScreen>().programId
     val programTitle = savedStateHandle.toRoute<Routes.UpsertProgramScreen>().programTitle
@@ -30,7 +30,27 @@ class UpsertProgramViewModel(
 
     fun upsertProgram() {
         viewModelScope.launch {
-            programRepository.upsert(
+            if (programId == null) {
+                insertProgram()
+            } else {
+                updateProgram()
+            }
+        }
+    }
+
+    fun insertProgram() {
+        viewModelScope.launch {
+            programRepository.insert(
+                Program(
+                    title = _programTitleInput.value
+                )
+            )
+        }
+    }
+
+    fun updateProgram() {
+        viewModelScope.launch {
+            programRepository.update(
                 Program(
                     id = programId,
                     title = _programTitleInput.value

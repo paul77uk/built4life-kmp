@@ -5,6 +5,8 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import paul.vickers.built4life.B4LDatabase
 import paul.vickers.built4life.database.DriverFactory
+import paul.vickers.built4life.repository.DayRepository
+import paul.vickers.built4life.repository.DayRepositoryImpl
 import paul.vickers.built4life.repository.ProgramRepository
 import paul.vickers.built4life.repository.ProgramRepositoryImpl
 import paul.vickers.built4life.repository.ScoreRepository
@@ -15,6 +17,7 @@ import paul.vickers.built4life.ui.addScore.AddScoreViewModel
 import paul.vickers.built4life.ui.deleteWorkouts.DeleteWorkoutViewModel
 import paul.vickers.built4life.ui.showPrograms.ProgramsViewModel
 import paul.vickers.built4life.ui.showWorkouts.WorkoutsViewModel
+import paul.vickers.built4life.ui.upsertDay.UpsertDayViewModel
 import paul.vickers.built4life.ui.upsertProgram.UpsertProgramViewModel
 import paul.vickers.built4life.ui.upsertWorkout.UpsertWorkoutViewModel
 
@@ -25,7 +28,7 @@ val appModule = module {
 //        if (sqlDriver == null) {
 //            WebWorkoutRepositoryImpl(Settings())
 //        } else {
-            WorkoutRepositoryImpl(database)
+        WorkoutRepositoryImpl(database)
 //        }
     }.bind<WorkoutRepository>()
 
@@ -37,12 +40,18 @@ val appModule = module {
         ProgramRepositoryImpl(database)
     }.bind<ProgramRepository>()
 
+    single {
+        DayRepositoryImpl(database)
+    }.bind<DayRepository>()
+
+
     viewModelOf(::WorkoutsViewModel)
     viewModelOf(::UpsertWorkoutViewModel)
     viewModelOf(::DeleteWorkoutViewModel)
     viewModelOf(::AddScoreViewModel)
     viewModelOf(::ProgramsViewModel)
     viewModelOf(::UpsertProgramViewModel)
+    viewModelOf(::UpsertDayViewModel)
 
 
 }

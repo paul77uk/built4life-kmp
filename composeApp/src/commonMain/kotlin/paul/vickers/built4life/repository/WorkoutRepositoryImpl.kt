@@ -29,46 +29,7 @@ class WorkoutRepositoryImpl(
                 )
             }
         }
-//    override val scoreWithWorkout: Flow<List<ScoreWithWorkout>> =
-//        queries.getAllWorkoutsWithScores().asFlow().mapToList(
-//            Dispatchers.Default
-//        ).map { workoutEntities ->
-//            workoutEntities.map { workoutEntity ->
-//                ScoreWithWorkout(
-//                    scoreId = workoutEntity.id_,
-//                    workoutId = workoutEntity.id,
-//                    workoutTitle = workoutEntity.title,
-//                    workoutWeight = workoutEntity.weight,
-//                    workoutEliteLevel = workoutEntity.eliteLevel,
-//                    scoreReps = workoutEntity.reps,
-//                )
-//            }
-//        }
 
-//    override val workoutsWithScores: Flow<List<WorkoutsWithScores>> =
-//        queries.getAllWorkoutsWithScores().asFlow().mapToList(
-//            Dispatchers.Default
-//        ).map { workoutEntities ->
-//            workoutEntities.groupBy { it.id }.map { (workoutId, values) ->
-//                WorkoutsWithScores(
-//                    workout = Workout(
-//                        id = workoutId,
-//                        title = values.first().title,
-//                        weight = values.first().weight,
-//                        eliteLevel = values.first().eliteLevel,
-//                        maxScore = values.first().maxScore,
-//                        creationDate = values.first().creationDate
-//                    ),
-//                    scores = values.filterNot { it.id_ == null }.map { scoreEntity ->
-//                        Score(
-//                            id = scoreEntity.id_,
-//                            reps = scoreEntity.reps!!,
-//                            workoutId = scoreEntity.id,
-//                        )
-//                    }
-//                )
-//            }
-//        }
     override val workoutsWithMaxScores: Flow<List<WorkoutWithMaxScore>> =
         queries.getAllWorkoutsWithMaxScore().asFlow().mapToList(
             Dispatchers.Default
@@ -85,17 +46,6 @@ class WorkoutRepositoryImpl(
                 )
             }
         }
-
-
-//        return withContext(Dispatchers.Default) {
-//            queries.getAll().executeAsList().map { row ->
-//                Workout(
-//                    id = row.id,
-//                    title = row.title,
-//                )
-//            }
-//        }
-
 
     override suspend fun getById(id: Long): Workout? {
         return withContext(Dispatchers.Default) {

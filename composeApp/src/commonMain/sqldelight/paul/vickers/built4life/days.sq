@@ -1,0 +1,15 @@
+CREATE TABLE days (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    program_id INTEGER NOT NULL,
+    FOREIGN KEY(program_id) REFERENCES programs(id) ON DELETE CASCADE
+);
+
+getDaysByProgramId:
+SELECT id, title, program_id FROM days WHERE program_id = ?;
+
+upsert:
+INSERT OR REPLACE INTO days(id, title, program_id) VALUES(?, ?, ?);
+
+delete:
+DELETE FROM days WHERE id = ?;

@@ -4,7 +4,7 @@ CREATE TABLE programs (
 );
 
 getAll:
-SELECT * FROM programs;
+SELECT id, UPPER(title) AS title FROM programs;
 
 getById:
 SELECT * FROM programs WHERE id = ?;
@@ -14,5 +14,17 @@ SELECT * FROM programs WHERE id = ?;
 upsert:
 INSERT OR REPLACE INTO programs(id, title) VALUES(?, ?);
 
+insert:
+INSERT INTO programs(title) VALUES(?);
+
+update:
+UPDATE programs SET title = ? WHERE id = ?;
+
 delete:
 DELETE FROM programs WHERE id = ?;
+
+getProgramsWithDays:
+SELECT * FROM programs
+LEFT JOIN days ON programs.id = days.program_id
+ORDER BY programs.id, days.id;
+
