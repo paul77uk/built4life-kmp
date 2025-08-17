@@ -24,7 +24,7 @@ delete:
 DELETE FROM programs WHERE id = ?;
 
 getProgramsWithDays:
-SELECT * FROM programs
+SELECT programs.id AS id, UPPER(programs.title) AS title, days.id AS id_, days.title AS title_, days.program_id AS program_id FROM programs
 LEFT JOIN days ON programs.id = days.program_id
 ORDER BY programs.id, days.id;
 

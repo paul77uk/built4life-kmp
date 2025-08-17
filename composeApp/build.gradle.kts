@@ -76,8 +76,6 @@ kotlin {
             // Material Icons
             implementation(compose.materialIconsExtended)
 
-            implementation(libs.decompose)
-            implementation("com.arkivanov.decompose:extensions-compose:3.3.0")
             implementation(libs.lifecycle.coroutines)
 
             implementation(libs.adaptive)

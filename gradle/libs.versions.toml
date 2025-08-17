@@ -12,7 +12,6 @@ androidx-lifecycle = "2.9.1"
 androidx-testExt = "1.3.0"
 composeHotReload = "1.0.0-beta04"
 composeMultiplatform = "1.8.2"
-decompose = "3.3.0"
 junit = "4.13.2"
 koin = "4.1.0"
 kotlin = "2.2.0"
@@ -23,9 +22,9 @@ navigationCompose = "2.9.0-beta04"
 sqlDelight = "2.1.0"
 kotlinxSerializationJson = "1.9.0"
 adaptive = "1.1.2"
+composeCompilerExtension = "1.5.11"
 
 [libraries]
-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import paul.vickers.built4life.theme.AppTheme
-import paul.vickers.built4life.ui.navigation.NavGraph
+import paul.vickers.built4life.navigation.NavGraph
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

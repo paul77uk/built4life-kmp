@@ -1,10 +1,12 @@
 CREATE TABLE scores (
     id INTEGER NOT NULL PRIMARY KEY,
     workout_id INTEGER NOT NULL,
+    day_workout_id INTEGER,
     reps INTEGER,
   	weight INTEGER,
     creation_date TEXT DEFAULT (datetime('now')) NOT NULL,
-    FOREIGN KEY(workout_id) REFERENCES workouts(id) ON DELETE CASCADE
+    FOREIGN KEY(workout_id) REFERENCES workouts(id) ON DELETE CASCADE,
+    FOREIGN KEY(day_workout_id) REFERENCES day_workout(id) ON DELETE CASCADE
 );
 
 getAllScores:
@@ -16,8 +18,14 @@ SELECT * FROM scores WHERE id = ?;
 getScoresByWorkoutId:
 SELECT * FROM scores WHERE workout_id = ?;
 
-upsertScore:
-INSERT OR REPLACE INTO scores(id, reps, weight, workout_id) VALUES(?, ?, ?, ?);
+getScoresByWorkoutAndDayId:
+SELECT * FROM scores WHERE workout_id = ? AND day_workout_id = ?;
+
+insertScore:
+INSERT INTO scores(reps, weight, workout_id, day_workout_id) VALUES(?, ?, ?, ?);
+
+updateScore:
+UPDATE scores SET reps = ?, weight = ? WHERE id = ?;
 
 deleteScore:
 DELETE FROM scores WHERE id = ?;

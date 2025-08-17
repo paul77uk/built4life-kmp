@@ -1,0 +1,24 @@
+CREATE TABLE day_workout (
+    id INTEGER PRIMARY KEY,
+    day_id INTEGER,
+    workout_id INTEGER,
+    FOREIGN KEY(day_id) REFERENCES days(id) ON DELETE CASCADE,
+    FOREIGN KEY(workout_id) REFERENCES workouts(id) ON DELETE CASCADE
+);
+
+getDayWorkoutsByDayId:
+SELECT day_workout.id, scores.id AS score_id, day_workout.day_id, day_workout.workout_id, workouts.title, scores.reps, scores.weight
+FROM workouts
+LEFT JOIN day_workout ON workouts.id = day_workout.workout_id
+LEFT JOIN scores ON day_workout.id = scores.day_workout_id
+WHERE day_workout.day_id = ?
+ORDER BY day_workout.id, scores.id;
+
+insert:
+INSERT INTO day_workout(day_id, workout_id) VALUES(?, ?);
+
+update:
+UPDATE day_workout SET  workout_id = ? WHERE id = ?;
+
+delete:
+DELETE FROM day_workout WHERE id = ?;
