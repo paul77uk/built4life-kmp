@@ -7,11 +7,20 @@ CREATE TABLE day_workout (
 );
 
 getDayWorkoutsByDayId:
-SELECT day_workout.id, scores.id AS score_id, day_workout.day_id, day_workout.workout_id, workouts.title, scores.reps, scores.weight
+SELECT
+day_workout.id,
+scores.id AS score_id,
+day_workout.day_id,
+day_workout.workout_id,
+workouts.title,
+scores.reps,
+scores.weight,
+MAX(scores.reps) OVER(PARTITION BY scores.weight, day_workout.workout_id) AS max_reps
 FROM workouts
 LEFT JOIN day_workout ON workouts.id = day_workout.workout_id
 LEFT JOIN scores ON day_workout.id = scores.day_workout_id
 WHERE day_workout.day_id = ?
+GROUP BY scores.id
 ORDER BY day_workout.id, scores.id;
 
 insert:

@@ -5,23 +5,25 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.OutlinedCard
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,9 +34,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import paul.vickers.built4life.features.days.model.DayWorkout
 import paul.vickers.built4life.features.scores.model.Score
@@ -42,7 +46,7 @@ import paul.vickers.built4life.features.workouts.model.Workout
 
 
 @Composable
-fun DaySreen(
+fun DayScreen(
     onBackClick: () -> Unit,
     viewModel: DayScreenViewModel = koinViewModel()
 ) {
@@ -55,9 +59,12 @@ fun DaySreen(
     val workouts: List<Workout?> by viewModel.workouts.collectAsStateWithLifecycle(initialValue = emptyList())
 
     val repsInput: String by viewModel.repsInput.collectAsStateWithLifecycle()
+    val weightInput: String by viewModel.weightInput.collectAsStateWithLifecycle()
+
 
 
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         topBar = {
             B4LTopAppBar(
                 title = dayTitle ?: "",
@@ -68,8 +75,9 @@ fun DaySreen(
         }
     ) { paddingValues ->
         LazyColumn(
-            modifier = Modifier.padding(paddingValues).padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.padding(paddingValues).padding(16.dp).fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
                 AddExerciseDropdown(
@@ -86,7 +94,9 @@ fun DaySreen(
                 )
             }
             items(dayWorkouts, key = { it.id!! }) { dayWorkout ->
-                OutlinedCard {
+                OutlinedCard(
+                    modifier = Modifier.width(400.dp)
+                ) {
                     ListItem(
                         headlineContent = { Text(dayWorkout.workoutTitle ?: "") },
                         trailingContent = {
@@ -108,8 +118,19 @@ fun DaySreen(
                         }
                     )
                 }
-                dayWorkout.scores.forEachIndexed { index, score ->
+                Row(
+                    modifier = Modifier.width(400.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("Sets", modifier = Modifier.weight(1f))
+                    Text("Max", modifier = Modifier.weight(1f))
+                    Text("Reps", modifier = Modifier.weight(1f))
+                    Text("Weight", modifier = Modifier.weight(1f))
+                    Text("", modifier = Modifier.weight(1f))
+                }
+                dayWorkout.scores.withIndex().zip(dayWorkout.maxReps) { (index, score), maxReps ->
                     ScoreItem(
+                        maxReps = maxReps,
                         score,
                         index,
 //                        value = repsInput,
@@ -127,6 +148,10 @@ fun DaySreen(
                                 )
 
                             )
+                        },
+                        onDelete = {
+                            viewModel.deleteScore(it)
+
                         }
                     )
 //                            ListItem(
@@ -186,8 +211,7 @@ fun WorkoutItem(
                     )
                 },
                 text = {
-                    Box(
-                    ) {
+
                         Text("Edit")
                         DropdownMenu(
                             expanded = expanded2,
@@ -205,7 +229,7 @@ fun WorkoutItem(
                                 )
                             }
                         }
-                    }
+
                 },
                 onClick = { expanded2 = !expanded2 }
             )
@@ -258,41 +282,65 @@ fun AddExerciseDropdown(
 
 @Composable
 fun ScoreItem(
+    maxReps: Long?,
     score: Score,
     index: Int,
 //    value: String,
 //    onValueChange: (String) -> Unit,
+    onDelete: (Score) -> Unit,
     onUpdateClick: (String, String) -> Unit
 ) {
     var repsValue: String by remember { mutableStateOf(score.reps.toString()) }
     var weightValue: String by remember { mutableStateOf(score.weight.toString()) }
+    var checked: Boolean by remember { mutableStateOf(false) }
 
     if (score.reps != null && score.weight != null)
-        Row {
-            OutlinedCard() {
-                Text(
-                    "${index + 1} "
-                )
-            }
-            OutlinedTextField(
+        Row(
+            modifier = Modifier.width(400.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+
+            Text(
+                "${index + 1} ", modifier = Modifier.weight(1f), fontSize = 14.sp
+            )
+
+            Text(
+                "$maxReps", modifier = Modifier.weight(1f), fontSize = 14.sp
+            )
+
+            BasicTextField(
                 value = repsValue,
                 onValueChange = {
                     repsValue = it
-                },
+                }, modifier = Modifier.weight(1f)
             )
-            OutlinedTextField(
+            BasicTextField(
                 value = weightValue,
                 onValueChange = {
                     weightValue = it
-                },
+                }, modifier = Modifier.weight(1f)
             )
-            Button(
-                onClick = {
-                    onUpdateClick(repsValue, weightValue)
-                }
+            Row(
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Update")
-
+                Checkbox(
+                    checked = checked,
+                    onCheckedChange = {
+                        checked = it
+                        if (it) {
+                            onUpdateClick(repsValue, weightValue)
+                        }
+                    }, modifier = Modifier.weight(1f)
+                )
+            IconButton(
+                onClick = { onDelete(score) }, modifier = Modifier.weight(1f)
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Delete,
+                    contentDescription = "Delete"
+                )
+            }
             }
         }
 }

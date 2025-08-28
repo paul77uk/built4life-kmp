@@ -30,6 +30,10 @@ class DayScreenViewModel(
     private val _repsInput = MutableStateFlow("")
     val repsInput: StateFlow<String> = _repsInput.asStateFlow()
 
+    private val _weightInput = MutableStateFlow("")
+    val weightInput: StateFlow<String> = _weightInput.asStateFlow()
+
+
 
 
     val dayWorkouts: StateFlow<List<DayWorkout>> = dayWorkoutRepository.getDayWorkoutsByDayId(dayId)
@@ -44,6 +48,11 @@ class DayScreenViewModel(
     fun onRepsTxtChange(newTxt: String) {
         _repsInput.value = newTxt
     }
+
+    fun onWeightTxtChange(newTxt: String) {
+        _weightInput.value = newTxt
+    }
+
 
 
 
@@ -86,6 +95,13 @@ class DayScreenViewModel(
             )
         }
     }
+
+    fun deleteScore(score: Score) {
+        viewModelScope.launch {
+            scoreRepository.delete(score)
+        }
+    }
+
 
 
 }

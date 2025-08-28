@@ -4,19 +4,37 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowRight
+import androidx.compose.material.icons.automirrored.outlined.Help
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Assessment
+import androidx.compose.material.icons.outlined.AttachFile
+import androidx.compose.material.icons.outlined.Attachment
+import androidx.compose.material.icons.outlined.Category
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.FileCopy
+import androidx.compose.material.icons.outlined.FileOpen
+import androidx.compose.material.icons.outlined.FitnessCenter
+import androidx.compose.material.icons.outlined.Help
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.SportsBar
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,10 +43,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -39,6 +65,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.ComposeNavigator
 import org.koin.compose.viewmodel.koinViewModel
 import paul.vickers.built4life.features.days.model.Day
 import paul.vickers.built4life.features.programs.model.Program
@@ -53,7 +80,8 @@ fun ProgramsScreen(
     viewModel: ProgramsViewModel = koinViewModel(),
     onAddEditClick: (Program?) -> Unit,
     onDayUpsertScreenClick: (Day?) -> Unit,
-    navigateToDayScreen: (Day) -> Unit
+    navigateToDayScreen: (Day) -> Unit,
+    navigateToExerciseScreen: () -> Unit
 ) {
     val programs: List<ProgramsWithDays> by viewModel.programs.collectAsStateWithLifecycle(
         initialValue = emptyList()
@@ -71,6 +99,37 @@ fun ProgramsScreen(
                 onClick = { onAddEditClick(null) },
                 screenAction = ScreenAction.JUST_ADD
             )
+        },
+        bottomBar = {
+            NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
+
+                    NavigationBarItem(
+                        selected = false,
+                        onClick = {
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.Outlined.FileCopy,
+                                contentDescription = "Programs"
+
+                            )
+                        },
+                        label = { Text("Programs") }
+                    )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = navigateToExerciseScreen,
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Outlined.FitnessCenter,
+                            contentDescription = "Exercises"
+
+                        )
+                    },
+                    label = { Text("Exercises") }
+                )
+
+            }
         }
     ) { innerPadding ->
         LazyColumn(
@@ -213,12 +272,14 @@ fun ProgramItem(
                     ) {
                         OutlinedButton(
                             shape = MaterialTheme.shapes.medium,
-                            onClick = { onDayUpsertScreenClick(
-                                Day(
-                                    title = null,
-                                    programId = program.program.id
+                            onClick = {
+                                onDayUpsertScreenClick(
+                                    Day(
+                                        title = null,
+                                        programId = program.program.id
+                                    )
                                 )
-                            ) }
+                            }
                         ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,

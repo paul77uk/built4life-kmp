@@ -35,6 +35,9 @@ class DayWorkoutRepositoryImpl(
                             workoutId = it.workout_id,
                             dayWorkoutId = it.id
                         )
+                    },
+                    maxReps = dayWorkout.value.map {
+                        it.max_reps
                     }
                 ) }
         }

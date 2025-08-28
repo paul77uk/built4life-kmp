@@ -7,5 +7,6 @@ data class DayWorkout(
     val dayId: Long? = null,
     val workoutId: Long? = null,
     val workoutTitle: String? = null,
-    val scores: List<Score> = emptyList()
+    val scores: List<Score> = emptyList(),
+    val maxReps: List<Long?> = emptyList()
 )

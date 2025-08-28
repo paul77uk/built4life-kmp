@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import paul.vickers.built4life.features.days.ui.dayScreen.DaySreen
+import paul.vickers.built4life.features.days.ui.dayScreen.DayScreen
 import paul.vickers.built4life.features.scores.ui.addScore.AddScoreScreen
 import paul.vickers.built4life.features.programs.ui.showPrograms.ProgramsScreen
 import paul.vickers.built4life.features.days.ui.upsertDay.UpsertDayScreen
@@ -52,6 +52,9 @@ fun NavGraph(
                         )
                     )
                 },
+                navigateToProgramScreen = {
+                    navController.navigate(Routes.ProgramsScreen)
+                }
             )
         }
         composable<Routes.UpsertWorkoutScreen> {
@@ -84,6 +87,9 @@ fun NavGraph(
                         dayId = day.id!!,
                         dayTitle = day.title
                     ))
+                },
+                navigateToExerciseScreen = {
+                    navController.navigate(Routes.WorkoutsScreen)
                 }
             )
         }
@@ -99,7 +105,7 @@ fun NavGraph(
         }
 
         composable<Routes.DayScreen> {
-            DaySreen(
+            DayScreen(
                 onBackClick = navController::navigateUp
             )
         }
